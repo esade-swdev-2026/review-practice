@@ -4,6 +4,7 @@ from pathlib import Path
 
 import typer
 
+from expense_tracker.rates import euro_to_dollar_rate, to_dollars
 from expense_tracker.report import (
     filter_by_month,
     format_csv,
@@ -35,6 +36,7 @@ def report(
     month: str = typer.Option("", help="Only this month, as YYYY-MM."),
     top: int = typer.Option(0, min=0, help="Also list the N largest expenses."),
     output_format: str = typer.Option("table", "--format", help="table or csv."),
+    usd: bool = typer.Option(False, "--usd", help="Also show the total in US dollars."),
 ) -> None:
     if month != "" and not is_valid_month(month):
         typer.echo(f"month must look like 2025-07, not {month}", err=True)
@@ -55,6 +57,9 @@ def report(
         lines = format_csv(totals)
     else:
         lines = format_report(path, category, minimum, totals, largest_expense(expenses), month)
+        if usd:
+            total = sum(amount for _, amount in totals)
+            lines.append(f"TOTAL in USD: {to_dollars(total, euro_to_dollar_rate()):.2f}")
         if top > 0:
             lines = lines + [""] + format_top(largest_expenses(expenses, top))
     for line in lines:
