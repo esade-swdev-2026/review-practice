@@ -5,6 +5,7 @@ from pathlib import Path
 import typer
 
 from expense_tracker.report import (
+    average_amount,
     filter_by_month,
     format_csv,
     format_report,
@@ -55,6 +56,7 @@ def report(
         lines = format_csv(totals)
     else:
         lines = format_report(path, category, minimum, totals, largest_expense(expenses), month)
+        lines.append(f"Average expense: {average_amount(expenses):.2f}")
         if top > 0:
             lines = lines + [""] + format_top(largest_expenses(expenses, top))
     for line in lines:

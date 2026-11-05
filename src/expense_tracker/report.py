@@ -64,6 +64,10 @@ def largest_expense(expenses: list[Expense]) -> Expense | None:
     return largest
 
 
+def average_amount(expenses: list[Expense]) -> float:
+    return sum(expense.amount for expense in expenses) / len(expenses)
+
+
 def largest_expenses(expenses: list[Expense], count: int) -> list[Expense]:
     return sorted(expenses, key=lambda expense: -expense.amount)[:count]
 
