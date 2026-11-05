@@ -35,6 +35,7 @@ def report(
     month: str = typer.Option("", help="Only this month, as YYYY-MM."),
     top: int = typer.Option(0, min=0, help="Also list the N largest expenses."),
     output_format: str = typer.Option("table", "--format", help="table or csv."),
+    save: str = typer.Option("", help="Also write the category totals to this file."),
 ) -> None:
     if month != "" and not is_valid_month(month):
         typer.echo(f"month must look like 2025-07, not {month}", err=True)
@@ -50,7 +51,7 @@ def report(
 
     if month != "":
         expenses = filter_by_month(expenses, month)
-    totals = total_by_category(expenses, category, minimum)
+    totals = total_by_category(expenses, category, minimum, save)
     if output_format == "csv":
         lines = format_csv(totals)
     else:

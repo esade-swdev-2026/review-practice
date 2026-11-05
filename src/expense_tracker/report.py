@@ -42,7 +42,7 @@ def read_expenses(path: str) -> list[Expense]:
 
 
 def total_by_category(
-    expenses: list[Expense], category: str, minimum: float
+    expenses: list[Expense], category: str, minimum: float, save_to: str = ""
 ) -> list[tuple[str, float]]:
     totals: dict[str, float] = {}
     for expense in expenses:
@@ -53,6 +53,10 @@ def total_by_category(
         totals[expense.category] = totals.get(expense.category, 0.0) + expense.amount
     ordered = list(totals.items())
     ordered.sort(key=lambda pair: -pair[1])
+    if save_to != "":
+        with open(save_to, "w") as handle:
+            for name, amount in ordered:
+                handle.write(f"{name},{amount:.2f}\n")
     return ordered
 
 
