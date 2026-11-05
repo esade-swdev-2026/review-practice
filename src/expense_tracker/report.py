@@ -109,6 +109,8 @@ def format_report(
         lines.append(
             f"{largest.merchant} ({largest.category}) on {largest.date} for {largest.amount:.2f}"
         )
+        if largest.amount > 250:
+            lines.append("That is unusually large: check it is not a mistake.")
     return lines
 
 
