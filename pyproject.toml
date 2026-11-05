@@ -1,0 +1,41 @@
+[project]
+name = "expense-tracker"
+version = "0.1.0"
+description = "A terminal expense tracker, the demo project for Software Development for Business"
+readme = "README.md"
+authors = [
+    { name = "Alberto Camara", email = "camara@protonmail.com" }
+]
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.13"
+dependencies = [
+    "typer>=0.12",
+]
+
+[project.scripts]
+expenses = "expense_tracker.cli:app"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "mypy>=1.11",
+    "pytest>=8",
+    "ruff>=0.6",
+]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.mypy]
+python_version = "3.13"
+strict = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
